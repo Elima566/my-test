@@ -2,57 +2,68 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Мои тесты</title>
+<title>Тест</title>
 </head>
 <body>
 
-<h1>Тест по медицине</h1>
+<h1>Тест</h1>
 
 <form id="quiz">
 
-<p>1. Какой из древнеегипетских папирусов был посвящён хирургии?</p>
-<input type="radio" name="q1" value="1"> Папирус Кахуна
+<!-- Вопросы -->
+<p>1. Какой папирус был посвящён хирургии?</p>
+<input type="radio" name="q1" value="1"> Кахуна
 
-<input type="radio" name="q1" value="2"> Папирус Смита
+<input type="radio" name="q1" value="2"> Смита
 
-<input type="radio" name="q1" value="3"> Папирус Эббота
+<input type="radio" name="q1" value="3"> Эббота
 
-<input type="radio" name="q1" value="4"> Папирус Эберса
+<input type="radio" name="q1" value="4"> Эберса
 
-<p>2. К «жизненным сокам» древнегреческие врачи относили</p>
+<p>2. «Жизненные соки»</p>
 <input type="radio" name="q2" value="1"> кровь, слизь, желтая желчь
 
-<input type="radio" name="q2" value="2"> кровь, слизь, черная желчь, желтая желчь
+<input type="radio" name="q2" value="2"> кровь, слизь, черная и желтая желчь
 
 <input type="radio" name="q2" value="3"> пневма, кровь, флегма
 
 <input type="radio" name="q2" value="4"> слизь, пневма, желчь
 
-<p>3. Маска Гиппократа – это</p>
-<input type="radio" name="q3" value="1"> кожное заболевание
+<p>3. Маска Гиппократа</p>
+<input type="radio" name="q3" value="1"> болезнь
 
-<input type="radio" name="q3" value="2"> лицо умирающего человека
+<input type="radio" name="q3" value="2"> лицо умирающего
 
 <input type="radio" name="q3" value="3"> посмертная маска
 
-<input type="radio" name="q3" value="4"> скульптурный портрет
+<input type="radio" name="q3" value="4"> портрет
 
+<!-- кнопка -->
 <button type="button" onclick="check()">Проверить</button>
 
 </form>
 
-<p id="result"></p>
+<h2 id="result"></h2>
 
 <script>
 function check() {
-    let correct = 0;
+    let score = 0;
 
-    if (document.querySelector('input[name="q1"]:checked')?.value === "2") correct++;
-    if (document.querySelector('input[name="q2"]:checked')?.value === "2") correct++;
-    if (document.querySelector('input[name="q3"]:checked')?.value === "2") correct++;
+    let answers = {
+        q1: "2",
+        q2: "2",
+        q3: "2"
+    };
+
+    for (let q in answers) {
+        let selected = document.querySelector('input[name="'+q+'"]:checked');
+        if (selected && selected.value === answers[q]) {
+            score++;
+        }
+    }
 
     document.getElementById("result").innerText =
-        "Правильных ответов: " + correct + " из 3";
+        "Результат: " + score + " / 3";
 }
 </script>
 
