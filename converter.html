@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Конвертер тестов</title>
+</head>
+<body>
+
+<h2>Вставь сюда текст из Word</h2>
+
+<textarea id="input" style="width:100%;height:300px;"></textarea>
+
+<button onclick="convert()">Сконвертировать</button>
+
+<h3>Результат (questions.js)</h3>
+<pre id="output"></pre>
+
+<script>
+function convert() {
+    let text = document.getElementById("input").value;
+
+    let blocks = text.split(/\n\s*\n/);
+    let result = "const questions = [\n";
+
+    blocks.forEach(block => {
+        let lines = block.split("\n").filter(l => l.trim() !== "");
+
+        if (lines.length < 2) return;
+
+        let q = lines[0];
+        let answers = lines.slice(1);
+
+        let a = [];
+        let correct = 0;
+
+        answers.forEach((ans, i) => {
+            let clean = ans.replace(/\d+\.\s*/, "").trim();
+
+            if (ans.includes("**") || ans.includes("✔")) {
+                correct = i;
+                clean = clean.replace(/\*\*/g, "").replace("✔", "");
+            }
+
+            a.push(clean);
+        });
+
+        result += `{
+ q: "${q}",
+ a: ${JSON.stringify(a)},
+ correct: ${correct}
+},\n`;
+    });
+
+    result += "];";
+
+    document.getElementById("output").innerText = result;
+}
+</script>
+
+</body>
+</html>
