@@ -2,69 +2,58 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Тест</title>
+<title>Тесты</title>
 </head>
 <body>
 
-<h1>Тест</h1>
+<h1>Медицинские тесты</h1>
 
-<form id="quiz">
+<div id="quiz"></div>
 
-<!-- Вопросы -->
-<p>1. Какой папирус был посвящён хирургии?</p>
-<input type="radio" name="q1" value="1"> Кахуна
-
-<input type="radio" name="q1" value="2"> Смита
-
-<input type="radio" name="q1" value="3"> Эббота
-
-<input type="radio" name="q1" value="4"> Эберса
-
-<p>2. «Жизненные соки»</p>
-<input type="radio" name="q2" value="1"> кровь, слизь, желтая желчь
-
-<input type="radio" name="q2" value="2"> кровь, слизь, черная и желтая желчь
-
-<input type="radio" name="q2" value="3"> пневма, кровь, флегма
-
-<input type="radio" name="q2" value="4"> слизь, пневма, желчь
-
-<p>3. Маска Гиппократа</p>
-<input type="radio" name="q3" value="1"> болезнь
-
-<input type="radio" name="q3" value="2"> лицо умирающего
-
-<input type="radio" name="q3" value="3"> посмертная маска
-
-<input type="radio" name="q3" value="4"> портрет
-
-<!-- кнопка -->
-<button type="button" onclick="check()">Проверить</button>
-
-</form>
+<button onclick="next()">Следующий</button>
 
 <h2 id="result"></h2>
 
+<script src="questions.js"></script>
+
 <script>
-function check() {
-    let score = 0;
+let current = 0;
+let score = 0;
 
-    let answers = {
-        q1: "2",
-        q2: "2",
-        q3: "2"
-    };
+function showQuestion() {
+    let q = questions[current];
 
-    for (let q in answers) {
-        let selected = document.querySelector('input[name="'+q+'"]:checked');
-        if (selected && selected.value === answers[q]) {
-            score++;
-        }
+    let html = "<h3>" + q.q + "</h3>";
+
+    for (let i = 0; i < q.a.length; i++) {
+        html += `<p><label>
+        <input type="radio" name="ans" value="${i}">
+        ${q.a[i]}
+        </label></p>`;
     }
 
-    document.getElementById("result").innerText =
-        "Результат: " + score + " / 3";
+    document.getElementById("quiz").innerHTML = html;
 }
+
+function next() {
+    let selected = document.querySelector('input[name="ans"]:checked');
+
+    if (selected && parseInt(selected.value) === questions[current].correct) {
+        score++;
+    }
+
+    current++;
+
+    if (current < questions.length) {
+        showQuestion();
+    } else {
+        document.getElementById("quiz").innerHTML = "";
+        document.getElementById("result").innerText =
+            "Готово! Результат: " + score + " / " + questions.length;
+    }
+}
+
+showQuestion();
 </script>
 
 </body>
